@@ -1,0 +1,150 @@
+module CustomerManagement
+{
+    struct CustomerInfo
+    {
+        string customerId;
+        string customerName;
+        string customerAddress;
+        string customerPhone;
+        string customerEmail;
+        string customerType;
+        string customerRegion;
+        string customerStatus;
+        string createdDate;
+        string updatedDate;
+    };
+
+    struct TransactionInfo
+    {
+        string transactionId;
+        string customerId;
+        string transactionInfo;
+        string transactionAmount;
+        string transactionType;
+        string paymentMethod;
+        string transactionDate;
+        string transactionStatus;
+    };
+
+    struct SupportRequest
+    {
+        string requestId;
+        string customerId;
+        string requestType;
+        string requestInfo;
+        string requestStatus;
+        string createdDate;
+        string updatedDate;
+        string resolutionDate;
+    };
+
+    struct ComplaintInfo
+    {
+        string complaintId;
+        string customerId;
+        string complaintType;
+        string complaintInfo;
+        string complaintStatus;
+        string createdDate;
+        string resolutionDate;
+    };
+
+    struct EmailCampaign
+    {
+        string campaignId;
+        string campaignName;
+        string campaignType;
+        string campaignStatus;
+        string campaignSchedule;
+        string emailTemplate;
+        string targetCustomer;
+    };
+
+    struct EmailMetrics
+    {
+        string campaignId;
+        string emailSent;
+        string emailDelivered;
+        string emailOpened;
+        string emailClicked;
+        string emailBounced;
+        string emailClickedThroughRate;
+        string emailConversionRate;
+    };
+
+    struct UpdateHistory
+    {
+        string entityId;
+        string entityType;
+        string fieldName;
+        string oldValue;
+        string newValue;
+        string updatedBy;
+        string updatedDate;
+    };
+
+    typedef sequence<CustomerInfo> CustomerInfoList;
+    typedef sequence<TransactionInfo> TransactionInfoList;
+    typedef sequence<SupportRequest> SupportRequestList;
+    typedef sequence<ComplaintInfo> ComplaintInfoList;
+    typedef sequence<EmailCampaign> EmailCampaignList;
+    typedef sequence<EmailMetrics> EmailMetricsList;
+    typedef sequence<UpdateHistory> UpdateHistoryList;
+    typedef sequence<string> StringList;
+
+    interface CustomerInfoService
+    {
+        boolean storeCustomerInfo(in CustomerInfo customer);
+        boolean storeTransactionInfo(in TransactionInfo transaction);
+        CustomerInfo getCustomerById(in string customerId);
+        CustomerInfoList getAllCustomers();
+        CustomerInfoList getCustomersByType(in string customerType);
+        CustomerInfoList getCustomersByRegion(in string customerRegion);
+        CustomerInfoList getCustomersByStatus(in boolean customerStatus);
+        CustomerInfoList searchCustomers(in string searchTerm);
+        TransactionInfoList getCustomerTransactions(in string customerId);
+        void deleteCustomer(in string customerId);
+    };
+
+    interface CustomerUpdateService
+    {
+        boolean updateCustomerInfo(in CustomerInfo customer);
+        boolean updateCustomerStatus(in string customerId, in string customerStatus);
+        boolean updateCustomerType(in string customerId, in string customerType);
+        boolean updateCustomerAddress(in string customerId, in string customerAddress);
+        boolean updateCustomerPhone(in string customerId, in string customerPhone);
+        boolean updateCustomerEmail(in string customerId, in string customerEmail);
+        boolean updateCustomerName(in string customerId, in string customerName);
+        UpdateHistoryList getCustomerUpdateHistory(in string customerId);
+    };
+
+    interface EmailMarketingService
+    {
+        boolean createEmailCampaign(in EmailCampaign campaign);
+        boolean sendEmailCampaign(in string campaignId);
+        boolean scheduleEmailCampaign(in string campaignId, in string scheduleDate);
+        boolean cancelEmailCampaign(in string campaignId);
+        EmailCampaignList getAllEmailCampaigns();
+        EmailMetricsList getEmailMetrics(in string campaignId);
+        StringList getEmailTargets(in string campaignId);
+        CustomerInfoList getCustomersByTargets(in string targetCustomer);
+        boolean addCustomerToEmailTarget(in string campaignId, in string targetCustomer);
+    };
+
+    interface CustomerSupportService
+    {
+        boolean createSupportRequest(in SupportRequest request);
+        boolean updateSupportRequest(in SupportRequest request);
+        SupportRequest getSupportRequestById(in string requestId);
+        SupportRequestList getAllSupportRequests();
+        SupportRequestList getSupportRequestsByCustomer(in string customerId);
+        SupportRequestList getSupportRequestsByStatus(in string status);
+
+        string createComplaint(in ComplaintInfo complaint);
+        boolean updateComplaint(in ComplaintInfo complaint);
+        ComplaintInfo getComplaintById(in string complaintId);
+        ComplaintInfoList getAllComplaints();
+        ComplaintInfoList getComplaintsByCustomer(in string customerId);
+        ComplaintInfoList getComplaintsByStatus(in string status);
+    };
+};
